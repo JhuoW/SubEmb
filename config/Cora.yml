@@ -1,0 +1,43 @@
+dataset: "Cora"
+
+model_name: "GCN"
+
+# config for each baseline model
+GCN:
+  epochs: 150
+  multirun: 10
+  dropout: 0.5
+  cuda: 0
+  feat_norm: True
+  hidden_dim: 64
+  multilabel: False
+  patience: 50
+  seed: 1234
+  lr: 0.005
+  weight_decay: 0.0005
+  lr_scheduler: False
+  monitor: "val_acc"
+  recache: False
+  optimizer: "Adam"
+  num_layers: 2
+  activation: "relu"
+
+GAT:
+  epochs: 100
+  multirun: 10
+  dropout: 0.6
+  cuda: 0
+  feat_norm: True
+  hidden_dim: 64
+  multilabel: False
+  heads: 1
+  patience: 50
+  seed: 1234
+  lr: 0.005
+  weight_decay: 0.0005
+  lr_scheduler: False
+  monitor: "val_acc"
+  recache: False
+  num_layers: 2
+  optimizer: "Adam"
+  activation: "leaky_relu"

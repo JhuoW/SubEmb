@@ -1,0 +1,122 @@
+dataset: 'ppi_bp'
+
+multilabel: False
+
+
+## Node feat type: 
+# positional encoding: 
+# 'RWPE' from 'Graph Neural Networks with Learnable Structural and Positional Representations'
+# 'Transition Prob' from 'Neural Link Prediction with Walk Pooling'
+# 'Kernel' from PE-GCL
+# 'Learnable': like GCond
+
+SubgraphCL:
+  epochs: 300
+  multirun: 1
+  seed: -1
+  node_feat_type: 'deg'  # 'deg', 'one', 'node_id', 'pos'
+  one_hot: False
+  lr_scheduler: True
+  optimizer: 'Adam'
+  lr: 0.0005
+  dropout: 0.5
+  weight_decay: 0.00005
+  resi: 0.2  # the lr reduce factor of ReduceLROnPlateau
+  min_lr: 0.00005
+  batch_size: 64
+  monitor: 'val_acc'
+  feat_norm: False
+
+
+GLASS:
+  epochs: 300
+  multirun: 10
+  seed: 0
+  node_feat_type: 'node_id'
+  lr_scheduler: True
+  one_hot: False
+  optimizer: 'Adam'
+  monitor: 'val_acc'
+  lr: 0.0005
+  weight_decay: 0 
+  resi: 0.2
+  min_lr: 0.00005
+  batch_size: 80
+  feat_norm: False
+
+  pool: 'sum'    # size, mean, max, sum
+  hidden_dim: 64
+  num_layers: 2
+  dropout: 0.5
+  jk: 1
+  z_ratio: 0.95
+  gn: True
+  act: 'ELU'
+  aggr: 'mean'
+
+# 55.16 / 2.35
+MLP:
+  epochs: 1000
+  multirun: 10
+  seed: 0
+  node_feat_type: 'node_id'
+  lr_scheduler: True
+  one_hot: False
+  optimizer: 'Adam'
+  monitor: 'val_acc'
+  num_layers: 2
+  lr: 0.0005
+  weight_decay: 0 
+  resi: 0.2
+  min_lr: 0.00005
+  batch_size: 80
+  feat_norm: False
+  patience: 300
+
+  feat_dim: 64
+  hidden_dim: 64
+  input_gn: False
+  input_dropout: 0.5
+  dropout: 0.5
+  pool: 'sum'
+  tail_act: False
+  gn: True
+  num_pred_layers: 2
+
+
+MLP_Prop:  # 58.11 / 3.01
+  epochs: 1500
+  multirun: 10
+  seed: 0
+  node_feat_type: 'node_id'
+  lr_scheduler: True
+  one_hot: False
+  optimizer: 'Adam'
+  monitor: 'val_acc'
+  num_layers: 2
+  lr: 0.0005
+  weight_decay: 0 
+  resi: 0.2
+  min_lr: 0.00005
+  batch_size: 80
+  feat_norm: False
+  patience: 500
+
+  prop_epochs: 1500
+  feat_dim: 64
+  hidden_dim: 64
+  input_gn: False
+  input_dropout: 0.5
+  dropout: 0.5
+  pool: 'sum'
+  tail_act: False
+  gn: True
+  num_pred_layers: 2  
+  # prop layers
+  adj_type: 'mean'   # sum, gcn, mean
+  use_input: True
+  residual: 'sum'   # None, 'sum', 'cat'
+  prop_dropout: 0.5
+  pred_head_layers: 2
+  prop_layers: 3
+  patience_prop: 500
